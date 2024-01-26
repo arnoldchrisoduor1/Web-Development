@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Color Slider</title>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <h2>Color<span class="danger">Slider</span></h2>
+        </div>
+        <div class="right">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contacts</a>
+        </div>
+    </div>
+
+    <!-------MAIN----------->
+    <main>
+        <div class="color-mixer">
+            <input type="range" id="red-slider" min="0", max="255" value="0">
+            <input type="range" id="green-slider" min="0", max="255" value="0">
+            <input type="range" id="blue-slider" min="0", max="255" value="0">
+            <div id="color-display"></div>
+            <p id="rgb-value"></p>
+            <p id="hsl-value"></p>
+        </div>
+    </main>
+
+<script src="index.js"></script>
+</body>
+</html>

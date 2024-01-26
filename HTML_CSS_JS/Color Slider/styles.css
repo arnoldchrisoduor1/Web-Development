@@ -1,0 +1,85 @@
+:root {
+    --background-color: rgb(241, 234, 234);
+    --danger-color: rgb(212, 110, 110);
+    --info-color: gray;
+    --darker: rgba(61, 60, 60, 0.993);
+    --font: Arial, sans-serif;
+    --border-color: #ccc
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font);
+}
+
+body {
+    background: var(--background-color);
+    overflow: hidden;
+}
+
+.danger {
+    color: var(--danger-color);
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem;
+}
+
+.container h3 {
+    color: var(--darker);
+}
+.container .left h2 {
+    color: var(--info-color);
+}
+
+.container .right {
+    display: flex;
+    gap: 2rem;
+}
+
+.container .right a{
+    display: inline-block;
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--info-color);
+    transition: transform 0.3s ease;
+}
+
+.container .right a:hover{
+    color: var(--danger-color);
+    transform: translateY(-5px);
+}
+main {
+    background: white;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.color-mixer {
+    text-align: center;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin-bottom:20px;
+}
+
+#color-display {
+    width: 200px;
+    height: 200px;
+    margin: 10px auto;
+    border: 1px solid var(--border-color);
+}
+
+#rgb-value,
+#hsl-value {
+    margin: 10px 0;
+}
