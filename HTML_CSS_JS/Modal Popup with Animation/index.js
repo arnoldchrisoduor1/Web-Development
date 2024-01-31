@@ -19,7 +19,7 @@ function closeModal(){
         modal.style.display = 'none';
         window.location.reload();
     }, 500);
-}
+} 
 
 modal.addEventListener('click', function(e){
     if(e.target.classList.contains('modal')){
