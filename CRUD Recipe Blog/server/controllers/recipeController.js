@@ -113,135 +113,60 @@ exports.exploreLatest = async(req, res) => {
   }
 
 
+  /**
+ * GET /submit-recipe
+ * Submitting recipes.
+ */
+  exports.submitRecipe = async(req, res) => {
+    const infoErrorsObj = req.flash('infoErrors');
+    const infoSubmitObj = req.flash('infoSubmit');
+    res.render('submit-recipe', { title: 'Cooking Blog - Submit Recipe', infoErrorsObj, infoSubmitObj });
+  }
 
-// async function insertDummyRecipeData(){
-//   try {
-//     await Recipe.insertMany([
-//       { 
-//         "name": "Grilled Lobster",
-//         "description": `Recipe Description Goes Here`, 
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "Thai",
-//         "image": "grilled-lobster-rolls.jpg"
-//       },
-//       { 
-//         "name": "Spring Rolls",
-//         "description": `Recipe Description Goes Here`, 
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "Thai",
-//         "image": "tom-daley.jpg"
-//       },
-//       { 
-//         "name": "Pinch Salad",
-//         "description": `Recipe Description Goes Here`, 
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "Thai",
-//         "image": "thai-chinese-inspired-pinch-salad.jpg"
-//       },
-//       { 
-//         "name": "Green Curry",
-//         "description": `Recipe Description Goes Here`, 
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "Thai",
-//         "image": "thai-green-curry.jpg"
-//       },
-//       { 
-//         "name": "Vegetable Broth",
-//         "description": `Recipe Description Goes Here`, 
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "Thai",
-//         "image": "thai-inspired-vegetable-broth.jpg"
-//       },
-//       { 
-//         "name": "Red Chicken Soup",
-//         "description": `Recipe Description Goes Here`, 
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "Chinese",
-//         "image": "tahi-red-chicken-soup.jpg"
-//       },
-//       { 
-//         "name": "Mussels",
-//         "description": `Recipe Description Goes Here`, 
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "Chinese",
-//         "image": "thai-style-mussels.jpg"
-//       },
-//       { 
-//         "name": "Veggie Pad",
-//         "description": `Recipe Description Goes Here`, 
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "Chinese",
-//         "image": "veggie-pad-thai.jpg"
-//       },
-//       { 
-//         "name": "Steak Tofu Stew",
-//         "description": `Recipe Description Goes Here`, 
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "Chinese",
-//         "image": "chinese-steak-tofu-stew.jpg"
-//       },
-//       { 
-//         "name": "Chocolate Banoffe Pie",
-//         "description": `Recipe Description Goes Here`, 
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "Chinese",
-//         "image": "chocolate-banoffe-whoopie-pies.jpg"
-//       },
-//     ]);
-//   } catch (error) {
-//     console.log('err', + error);
-//   }
-// }
+   /**
+ * GET /submit-recipe
+ * Submitting recipes.
+ */
 
 
-// insertDummyRecipeData();
+   exports.submitRecipeOnPost = async(req, res) => {
+    try {
+  
+      let imageUploadFile;
+      let uploadPath;
+      let newImageName;
+  
+      if(!req.files || Object.keys(req.files).length === 0){
+        console.log('No Files where uploaded.');
+      } else {
+  
+        imageUploadFile = req.files.image;
+        newImageName = Date.now() + imageUploadFile.name;
+  
+        uploadPath = require('path').resolve('./') + '/public/uploads/' + newImageName;
+  
+        imageUploadFile.mv(uploadPath, function(err){
+          if(err) return res.satus(500).send(err);
+        })
+  
+      }
+  
+      const newRecipe = new Recipe({
+        name: req.body.name,
+        description: req.body.description,
+        email: req.body.email,
+        ingredients: req.body.ingredients,
+        category: req.body.category,
+        image: newImageName
+      });
+      
+      await newRecipe.save();
+  
+      req.flash('infoSubmit', 'Recipe has been added.')
+      res.redirect('/submit-recipe');
+    } catch (error) {
+      // res.json(error);
+      req.flash('infoErrors', error);
+      res.redirect('/submit-recipe');
+    }
+  }
