@@ -43,8 +43,9 @@ let swiperHome = new Swiper('.home__swiper', {
             centeredSlides: 'auto',
         },
         1152:{
+            slidesPerView:3,
             centeredSlides: 'auto',
-            spaceBetween: -64,
+            spaceBetween: -10,
         }
     }
 });
